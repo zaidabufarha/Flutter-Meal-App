@@ -57,36 +57,35 @@ class _TabScreenState extends State<TabScreen> {
               Filter.vegan: false,
             };
       });
-
     }
   }
 
-  void toggleFavorite(Meal meal) {
-    setState(() {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      if (favorites.contains(meal)) {
-        favorites.remove(meal);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(
-          SnackBar(
-            duration: Duration(seconds: 2),
-            content: Text('Removed from favorites'),
-          ),
-        );
-      } else {
-        favorites.add(meal);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(
-          SnackBar(
-            duration: Duration(seconds: 2),
-            content: Text('Added to favorites'),
-          ),
-        );
-      }
-    });
-  }
+  // void toggleFavorite(Meal meal) {
+  //   setState(() {
+  //     ScaffoldMessenger.of(context).clearSnackBars();
+  //     if (favorites.contains(meal)) {
+  //       favorites.remove(meal);
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(
+  //         SnackBar(
+  //           duration: Duration(seconds: 2),
+  //           content: Text('Removed from favorites'),
+  //         ),
+  //       );
+  //     } else {
+  //       favorites.add(meal);
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(
+  //         SnackBar(
+  //           duration: Duration(seconds: 2),
+  //           content: Text('Added to favorites'),
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
 
   void selectPage(int index) {
     setState(() {
@@ -99,19 +98,16 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePageBody = CategoryScreen(isFavorite, toggleFavorite);
+    Widget activePageBody = CategoryScreen();
 
     if (activePageIndex == 1) {
       activePageBody = CategoryMealScreen.favorites(
-        favorites,
-        isFavorite,
-        toggleFavorite,
         filterList,
       );
     } else {
       activePageIndex = 0;
       activePageTitle = 'Categories';
-      activePageBody = CategoryScreen(isFavorite, toggleFavorite);
+      activePageBody = CategoryScreen();
     }
 
     return Scaffold(

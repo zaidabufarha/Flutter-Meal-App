@@ -8,15 +8,11 @@ import 'package:meals/screens/meal_screen.dart';
 class MealCard extends StatelessWidget {
   MealCard(
     this.meal,
-    this.category,
-    this.isFavorite,
-    this.toggleFavorite, {
+    this.category, {
     super.key,
   });
   Category category;
   Meal meal;
-  final bool Function(Meal meal) isFavorite;
-  final void Function(Meal meal) toggleFavorite;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -86,8 +82,7 @@ class MealCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) =>
-                          MealScreen(meal, isFavorite, toggleFavorite),
+                      builder: (ctx) => MealScreen(meal),
                     ),
                   );
                 },

@@ -2,37 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/category.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/provider/favorites_provider.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/widgets/meal_card.dart';
+import 'package:meals/provider/meal_list_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoryMealScreen extends StatelessWidget {
+class CategoryMealScreen extends ConsumerWidget {
   CategoryMealScreen(
     this.category,
-    this.isFavorite,
-    this.toggleFavorite,
     this.filterList, {
     super.key,
   });
   CategoryMealScreen.favorites(
-    this.favorites,
-    this.isFavorite,
-    this.toggleFavorite,
     this.filterList, {
     super.key,
   }) {
     category = null;
   }
   final Map<Filter, bool> filterList;
-  final bool Function(Meal meal) isFavorite;
-  final void Function(Meal meal) toggleFavorite;
   Category? category;
-  List<Meal>? favorites;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Meal> favorites = ref.watch(FavoritesProvider);
     List<Meal> categoryMeals = [];
     if (category != null) {
-      categoryMeals = dummyMeals
+      categoryMeals = ref
+          .watch(mealListProvider)
           .where((meal) => meal.categories.contains(category!.id))
           .toList();
     } else {
@@ -80,8 +77,6 @@ class CategoryMealScreen extends StatelessWidget {
           itemBuilder: (context, index) => MealCard(
             categoryMeals[index],
             category!,
-            isFavorite,
-            toggleFavorite,
           ),
         ),
       );

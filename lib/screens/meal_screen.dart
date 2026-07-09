@@ -4,12 +4,7 @@ import 'package:meals/widgets/star_button.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealScreen extends StatelessWidget {
-  MealScreen(this.meal, this.isFavorite, this.toggleFavorite, {super.key});
-
-  //this isnt very efficient but good enough for now
-  final bool Function(Meal meal) isFavorite;
-
-  final void Function(Meal meal) toggleFavorite;
+  MealScreen(this.meal, {super.key});
 
   Meal meal;
 
@@ -17,7 +12,7 @@ class MealScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [StarButton(meal, isFavorite, toggleFavorite)],
+        actions: [StarButton(meal)],
         backgroundColor: Colors.black,
         title: Text(meal.title),
       ),

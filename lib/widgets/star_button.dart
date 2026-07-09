@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/screens/tabs.dart';
+import 'package:meals/provider/favorites_provider.dart';
 
-class StarButton extends StatefulWidget {
-  const StarButton(this.meal, this.isFavorite, this.toggleFavorite, {super.key});
+class StarButton extends ConsumerWidget {
+  const StarButton(this.meal, {super.key});
   final Meal meal;
-  final bool Function(Meal meal) isFavorite;
-  final void Function(Meal meal) toggleFavorite;
   @override
-  State<StatefulWidget> createState() {
-    return _StarButtonState();
-  }
-}
-
-class _StarButtonState extends State<StarButton> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
-      icon: widget.isFavorite(widget.meal)
+      icon: ref.watch(FavoritesProvider).contains(meal)
+          //isfavorite wouldnt work but this does
           ? Icon(Icons.star)
           : Icon(Icons.star_border),
 
       onPressed: () {
-        setState(() {
-          widget.toggleFavorite(widget.meal);
-        });
+        ref.read(FavoritesProvider.notifier).toggleFavorite(meal);
       },
     );
   }
