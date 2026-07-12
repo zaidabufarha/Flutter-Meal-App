@@ -14,10 +14,11 @@ class FavoritesNotifier extends StateNotifier<List<Meal>> {
     if (isFavorite(meal)) {
       //remove
       state = state.where((m) {
-        if (m == meal)
+        if (m == meal) {
           return false;
-        else
+        } else {
           return true;
+        }
       }).toList();
     } else {
       //add

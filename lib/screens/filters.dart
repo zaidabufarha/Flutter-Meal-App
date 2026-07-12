@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:meals/provider/filters_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
-enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
-
-class Filters extends StatefulWidget {
-  Filters(this.currentFilters, {super.key});
-  Map<Filter, bool> currentFilters;
+class Filters extends ConsumerStatefulWidget {
+  Filters({super.key});
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<Filters> createState() {
     return _FiltersState();
   }
 }
 
-class _FiltersState extends State<Filters> {
+class _FiltersState extends ConsumerState<Filters> {
   bool glutenFree = false;
   bool lactoseFree = false;
   bool vegan = false;
@@ -21,25 +21,28 @@ class _FiltersState extends State<Filters> {
   void initState() {
     //initialize
     super.initState();
-    print(widget.currentFilters);
-    glutenFree = widget.currentFilters[Filter.glutenFree]!;
-    lactoseFree = widget.currentFilters[Filter.lactoseFree]!;
-    vegan = widget.currentFilters[Filter.vegan]!;
-    vegetarian = widget.currentFilters[Filter.vegetarian]!;
+    final activeFilters = ref.read(filterProvider);
+    //initializing from provider. still local management to update UI
+    glutenFree = activeFilters[Filter.glutenFree]!;
+    lactoseFree = activeFilters[Filter.lactoseFree]!;
+    vegan = activeFilters[Filter.vegan]!;
+    vegetarian = activeFilters[Filter.vegetarian]!;
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
+
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        Navigator.of(context).pop({
+        ref.read(filterProvider.notifier).setAllFilters({
           Filter.glutenFree: glutenFree,
           Filter.lactoseFree: lactoseFree,
           Filter.vegetarian: vegetarian,
           Filter.vegan: vegan,
         });
+        Navigator.of(context).pop();
       },
       child: Scaffold(
         appBar: AppBar(

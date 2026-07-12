@@ -7,20 +7,18 @@ import 'package:meals/screens/filters.dart';
 import 'package:meals/widgets/meal_card.dart';
 import 'package:meals/provider/meal_list_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/provider/filters_provider.dart';
 
 class CategoryMealScreen extends ConsumerWidget {
   CategoryMealScreen(
-    this.category,
-    this.filterList, {
+    this.category, {
     super.key,
   });
-  CategoryMealScreen.favorites(
-    this.filterList, {
+  CategoryMealScreen.favorites({
     super.key,
   }) {
     category = null;
   }
-  final Map<Filter, bool> filterList;
   Category? category;
 
   @override
@@ -33,15 +31,17 @@ class CategoryMealScreen extends ConsumerWidget {
           .where((meal) => meal.categories.contains(category!.id))
           .toList();
     } else {
-      categoryMeals = List.from(favorites!);
+      categoryMeals = List.from(favorites);
       category = Category('f', 'Favorites', Colors.orangeAccent);
     }
+    final filterList = ref.watch(filterProvider);
+    print(filterList); //debug
     categoryMeals = categoryMeals.where((meal) {
       if (((filterList[Filter.glutenFree]! && !meal.isGlutenFree) ||
               (filterList[Filter.lactoseFree]! && !meal.isLactoseFree) ||
               (filterList[Filter.vegan]! && !meal.isVegan) ||
               (filterList[Filter.vegetarian]! && !meal.isVegetarian)) &&
-          category!.title == 'f') {
+          category!.id != 'f') {
         //favorites include filtered out items because you favorited them for a reason probably
         return false;
       } else {

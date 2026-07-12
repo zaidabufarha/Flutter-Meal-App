@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/category.dart';
-import 'package:meals/models/meal.dart';
 import 'package:meals/screens/category_meal_screen.dart';
 import 'package:meals/screens/tabs.dart';
 import 'package:meals/widgets/category_card.dart';
@@ -15,7 +14,6 @@ class CategoryScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => CategoryMealScreen(
           category,
-          filterList,
         ),
       ),
     );

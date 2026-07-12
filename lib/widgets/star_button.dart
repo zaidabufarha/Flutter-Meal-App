@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meals/screens/tabs.dart';
 import 'package:meals/provider/favorites_provider.dart';
 
 class StarButton extends ConsumerWidget {
